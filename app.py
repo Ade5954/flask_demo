@@ -13,11 +13,12 @@ def index():
 def login():
     return render_template('login-1.html',title="laymini")
 
+'''
 @app.route('/')
 def hello_world():
     # return 'Hello World!'
     return render_template('login-1.html',title="人口普查")
-
+'''
 
 # @app.route('/top5_chart', methods=['GET'])
 # def top5_chart():
