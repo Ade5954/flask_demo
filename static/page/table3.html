@@ -14,36 +14,17 @@
     <div class="layuimini-main">
 
         <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
+            <legend>全局搜索</legend>
             <div style="margin: 10px 10px 10px 10px">
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户性别</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户城市</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">用户职业</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="classify" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                            <button type="button" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
                     </div>
                 </form>
@@ -66,6 +47,7 @@
 
     </div>
 </div>
+<script type="text/javascript" src="../lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
 <script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script>
     layui.use(['form', 'table'], function () {
@@ -74,6 +56,7 @@
             table = layui.table;
 
         table.render({
+            id: 'paper_table',
             elem: '#currentTableId',
             url: '/paper_show',
             toolbar: '#toolbarDemo',
@@ -84,14 +67,14 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50},
-                {field: 'id', width: 80, title: 'ID', sort: true},
+                {field: 'id', width: 80, title: '序号', sort: true},
                 {field: 'year', width: 80, title: '年度'},
-                {field: 'name', width: 80, title: '论文名称', sort: true},
-                {field: 'magazine', width: 80, title: '杂志'},
-                {field: 'madazine_num', title: '杂志期刊', minWidth: 150},
-                {field: 'author', width: 80, title: '积分', sort: true},
-                {field: 'major', width: 80, title: '评分', sort: true},
-                {field: 'prove', width: 80, title: '职业'},
+                {field: 'name', width: 80, title: '论文题目', sort: true},
+                {field: 'magazine', width: 80, title: '期刊名称'},
+                {field: 'madazine_num', title: '期刊期数', minWidth: 150},
+                {field: 'author', width: 80, title: '作者姓名', sort: true},
+                {field: 'major', width: 80, title: '专业', sort: true},
+                {field: 'prove', width: 80, title: '支撑材料'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
@@ -102,7 +85,7 @@
 
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
+            /*var result = JSON.stringify(data.field);
             layer.alert(result, {
                 title: '最终的搜索信息'
             });
@@ -115,8 +98,8 @@
                 , where: {
                     searchParams: result
                 }
-            }, 'data');
-
+            }, 'data');*/
+            paper_search(data);
             return false;
         });
 
@@ -175,6 +158,73 @@
         });
 
     });
+//论文数据
+function paper_show() {
+    var search_string = $("#search_string").val();
+    url = window.location.protocol +"//"+ window.location.host + "/paper_search"
+    console.log(url);
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            search_string: search_string
+        },
+        success:function(data){
+            //var data = JSON.parse(data); // 没必要解析data
+            if(data.code == 0){
+                //console.log("成功查询到企业绑定信息!");
+
+                var paperList = data.data;
+                layui.table.reload('paper_table', {
+                    data: paperList, // 更新待选择企业绑定信息表
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                });
+            }else{
+                layer.alert("未查找到该专利信息!", {icon: 7});
+            }
+        },
+        error: function () {
+            layer.alert("搜索专利信息失败,请检查网络!", {icon: 7});
+        }
+    });
+}
+
+
+// 论文查找
+function paper_search() {
+    var search_string = $("#search_string").val();
+    url = window.location.protocol +"//"+ window.location.host + "/paper_search"
+    console.log(url);
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            search_string: search_string
+        },
+        success:function(data){
+            //var data = JSON.parse(data); // 没必要解析data
+            if(data.code == 0){
+                //console.log("成功查询到企业绑定信息!");
+
+                var paperList = data.data;
+                layui.table.reload('paper_table', {
+                    url: "", // 不传url
+                    data: paperList, // 更新待选择企业绑定信息表
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    }
+                });
+            }else{
+                layer.alert("未查找到该专利信息!", {icon: 7});
+            }
+        },
+        error: function () {
+            layer.alert("搜索专利信息失败,请检查网络!", {icon: 7});
+        }
+    });
+}
 </script>
 
 </body>
