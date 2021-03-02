@@ -158,7 +158,7 @@ def issue_show():
 def business_show():
     page_num=request.values.get('page')
     page_size=request.values.get('limit')
-    result,count = sql_util.issue_show(int(page_num),int(page_size))
+    result,count = sql_util.business_show(int(page_num),int(page_size))
     data=[]
     # print(result)
     for item in result:

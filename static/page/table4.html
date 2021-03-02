@@ -14,13 +14,14 @@
     <div class="layuimini-main">
 
         <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
+            <legend>全局搜索</legend>
             <div style="margin: 10px 10px 10px 10px">
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
+                                <!--search_string输入框-->
+                                <input id="search_string" type="text" name="search_string" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -79,7 +80,6 @@
                 {field: 'prove', width: 135, title: '立项证书', sort: true},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
-
             limits: [10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,
@@ -91,17 +91,7 @@
             /*var result = JSON.stringify(data.field);
             layer.alert(result, {
                 title: '最终的搜索信息'
-            });
-
-            //执行搜索重载
-            table.reload('currentTableId', {
-                page: {
-                    curr: 1
-                }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');*/
+            });*/
             issue_search(data);
             return false;
         });
@@ -132,7 +122,7 @@
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
+            console.log(obj);
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
@@ -161,39 +151,7 @@
         });
 
     });
-    // 获得专刊数据
-function issue_show() {
-    var search_string = $("#search_string").val();
-    url = window.location.protocol +"//"+ window.location.host + "/issue_search"
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: {
-            search_string: search_string
-        },
-        success:function(data){
-            //var data = JSON.parse(data); // 没必要解析data
-            if(data.code == 0){
-                //console.log("成功查询到企业绑定信息!");
-
-                var issueList = data.data;
-                layui.table.reload('issue_table', {
-                    data: issueList, // 更新待选择企业绑定信息表
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                });
-            }else{
-                layer.alert("未查找到该专利信息!", {icon: 7});
-            }
-        },
-        error: function () {
-            layer.alert("搜索专利信息失败,请检查网络!", {icon: 7});
-        }
-    });
-}
-
+    
 // 专刊查找
 function issue_search() {
     var search_string = $("#search_string").val();
@@ -208,7 +166,6 @@ function issue_search() {
         success:function(data){
             //var data = JSON.parse(data); // 没必要解析data
             if(data.code == 0){
-                //console.log("成功查询到企业绑定信息!");
 
                 var issueList = data.data;
                 layui.table.reload('issue_table', {
