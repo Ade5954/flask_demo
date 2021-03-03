@@ -1,4 +1,5 @@
 import pymysql
+import time
 
 '''sql工具类'''
 
@@ -83,10 +84,8 @@ def contest_show(page_num, page_size):
     query_sql = ' SELECT * from contest_show LIMIT {},{}'.format(
         index_page,page_size)
     result = query(query_sql)
-    print(result)
     count_sql='select count(*) as count from contest_show'
     count = query(count_sql)[0][0]
-    print(count)
     return result,count
 
 #专利申请
@@ -98,7 +97,6 @@ def patent_show(page_num,page_size):
     result = query(query_sql)
     count_sql='select count(*) as count from patent_show'
     count = query(count_sql)[0][0]
-    print(count)
     return result,count
 
 #学术论文
@@ -110,7 +108,6 @@ def paper_show(page_num,page_size):
     result = query(query_sql)
     count_sql='select count(*) as count from paper_show'
     count = query(count_sql)[0][0]
-    print(count)
     return result,count
 
 #课题申报
@@ -122,7 +119,6 @@ def issue_show(page_num,page_size):
     result = query(query_sql)
     count_sql='select count(*) as count from issue_show'
     count = query(count_sql)[0][0]
-    print(count)
     return result,count
 
 #创业项目
@@ -134,7 +130,6 @@ def business_show(page_num,page_size):
     result = query(query_sql)
     count_sql='select count(*) as count from business_show'
     count = query(count_sql)[0][0]
-    print(count)
     return result,count
 
 
@@ -145,7 +140,6 @@ def contest_search(search_string):
     search_sql = ' select * from contest_show pat where pat.search like "%{}%"'.format(
         search_string)
     result = query(search_sql)
-    print(result)
     return result
 
 #专利申请_搜索
@@ -153,7 +147,6 @@ def patent_search(search_string):
     search_sql = ' select * from patent_show pat where pat.search like "%{}%"'.format(
         search_string)
     result = query(search_sql)
-    print(result)
     return result
 
 #学术论文_搜索
@@ -161,7 +154,6 @@ def paper_search(search_string):
     search_sql = ' select * from paper_show pat where pat.search like "%{}%"'.format(
         search_string)
     result = query(search_sql)
-    print(result)
     return result
 
 #课题申报_搜索
@@ -169,7 +161,6 @@ def issue_search(search_string):
     search_sql = ' select * from issue_show pat where pat.search like "%{}%"'.format(
         search_string)
     result = query(search_sql)
-    print(result)
     return result
 
 #创业项目_搜索
@@ -177,7 +168,6 @@ def business_search(search_string):
     search_sql = ' select * from business_show pat where pat.search like "%{}%"'.format(
         search_string)
     result = query(search_sql)
-    print(result)
     return result
 
 #===================================删除=============================================
@@ -186,16 +176,35 @@ def patent_delete(delete_id):
     conn, cursor = get_conn()
     sta=0
     sta+=cursor.execute("delete from patent_show where Id=%d"%(int(delete_id)))
-    conn.commit()
+    # 进行日志备份,时间+操作+具体id
+    text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,删除patent表中id="+delete_id+"条目,"+" 是否成功:"+str(sta)
+    cursor.execute("INSERT INTO action_log (action,text) VALUES ('delete','%s')"%(text))
+    print('fuck')
+    conn.commit() #提交到数据库
     return (sta)
 
+#===================================登录检查=============================================
 def loginCheck(username,password):
     query_sql = "select count(*) from user u where u.username = '{}' and u.password = '{}'".format(
         username,password)
     result = query(query_sql)
+    return result
+
+#===================================日志操作=============================================
+#保存日志
+def saveLog(action,text):
+    search_sql = " INSERT INTO action_log (action,text) VALUES ('{}','{}')".format(
+        action,text)
+    result = query(search_sql)
     print(result)
     return result
 
+def searchLog(action_string):
+    search_sql = ' select * from action_log where action like "%{}%"'.format(
+        action_string)
+    result = query(search_sql)
+    print(result)
+    return result
 '''
 #专利申请_修改
 def patent_update(a,b,c,):
@@ -206,4 +215,4 @@ def patent_update(a,b,c,):
     result = query(search_sql)
     print(result)
     return result
-    '''
+'''

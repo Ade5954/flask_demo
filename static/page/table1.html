@@ -35,7 +35,8 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+                <!--
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>-->
             </div>
         </script>
 
@@ -43,7 +44,7 @@
 
         <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <a onclick="contest_delete()" class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
     </div>
@@ -114,7 +115,7 @@
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '../page/table/add.html',
+                    content: '../page/table/add_contest.html', // 内嵌add.html
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -126,9 +127,13 @@
             }
         });
 
+        
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj);
+            console.log(obj.data.id);
+            var checkStatus = table.checkStatus('contest_table')
+                , data = checkStatus.data;
+            console.log(data);
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
@@ -187,6 +192,29 @@ function contest_search() {
         },
         error: function () {
             layer.alert("查找该竞赛信息信息失败,请检查网络!", {icon: 7});
+        }
+    });
+}
+
+// 专刊删除 - 传入删除条目的id
+function contest_delete(id) {
+    url = window.location.protocol +"//"+ window.location.host + "/contest_delete"
+    console.log(url+"delete_id = "+id);
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            delete_id: id
+        },
+        success:function(data){
+            if(data.code == 0 && data.data[0].isDelete == 1){
+                console.log("删除成功!");
+            }else{
+                layer.alert("删除失败,请联系管理员!", {icon: 7});
+            }
+        },
+        error: function () {
+            layer.alert("删除失败,请检查网络!", {icon: 7});
         }
     });
 }
