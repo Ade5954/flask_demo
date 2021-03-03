@@ -19,7 +19,7 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">年度</label>
         <div class="layui-input-block">
-            <input type="text" name="nd" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入年度" value="" class="layui-input">
+            <input type="text" class="layui-input" id="year">
         </div>
     </div>
     <div class="layui-form-item">
@@ -31,37 +31,45 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">主办单位</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">类别</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入类别" value="" class="layui-input">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入类别" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">获奖等级</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">获奖时间</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">作品名称</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">指导老师</label>
         <div class="layui-input-block">
-            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+            <select name="teacher" id="teacher" lay-verify="required" lay-filter="teacherFilter">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号</label>
+        <div class="layui-input-block">
+            <input type="text" id="teacher_number"name="teacher_number" lay-verify="required" lay-reqtext="工号不能为空" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -118,11 +126,44 @@
     -->
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/cookie.js" charset="utf-8"></script> <!--cookie操作-->
 <script>
-    layui.use(['form'], function () {
+    layui.use(['form','laydate'], function () {
         var form = layui.form,
             layer = layui.layer,
+            laydate = layui.laydate,
             $ = layui.$;
+
+        //年选择器
+        laydate.render({ 
+            elem: '#year',
+            type: 'year'
+        });
+
+        var map = new HashMap(); // 新建hashmap(),该方法位于cookie中
+        // 从数据库拿teacher_table渲染到下拉框中
+        console.log(window.location.protocol +"//"+ window.location.host + "/teacher_show");
+        $.ajax({
+             url: window.location.protocol +"//"+ window.location.host + "/teacher_show",
+             cache: false,
+             type: 'GET',
+             async: true,
+             success:function(data) {
+                 var data = data.data;
+                 $.each(data, function(index,item) {
+                     $('#teacher').append(new Option(item.name, item.number)); // 往下拉菜单里添加元素
+                 });
+                 layui.form.render("select"); // 重新渲染select组件
+             },
+             error:function() {
+                 layer.alert("未能成功读取到教师列表,请检查网络!");
+             }
+         });
+
+        // 监听select组件,把工号值存入teacher_number中
+        form.on('select(teacherFilter)', function(data) {
+            $('#teacher_number').val(data.value);
+        })
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {

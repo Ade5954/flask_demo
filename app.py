@@ -166,7 +166,7 @@ def business_show():
     return jsonify({'code':0,'msg':"",'count':count,'data':data})
 
 #老师列表
-@app.route('/business_show', methods=['GET'])
+@app.route('/teacher_show', methods=['GET'])
 def teacher_show():
     result = sql_util.teacher_show()
     data=[]
