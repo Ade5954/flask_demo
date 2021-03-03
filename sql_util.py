@@ -132,6 +132,12 @@ def business_show(page_num,page_size):
     count = query(count_sql)[0][0]
     return result,count
 
+#老师列表_搜索
+def teacher_show():
+    search_sql = ' select * from teacher '
+    result = query(search_sql)
+    return result
+
 
 #===================================查询=============================================
 
@@ -170,7 +176,32 @@ def business_search(search_string):
     result = query(search_sql)
     return result
 
+#===================================添加=============================================
+
+#学科竞赛_添加
+def contest_add(year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,prove):
+    conn, cursor = get_conn()
+    sta=0
+    sta+=cursor.execute(" INSERT INTO contest_show (year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,prove) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(
+        year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,prove))
+    text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,添加contest表中name="+name_contest+"条目,"+" 是否成功:"+str(sta)
+    cursor.execute("INSERT INTO action_log (action,text) VALUES ('insert','%s')"%(text))
+    conn.commit() #提交到数据库
+    return (sta)
+
 #===================================删除=============================================
+
+#学科竞赛_删除
+def contest_delete(delete_id):
+    conn, cursor = get_conn()
+    sta=0
+    sta+=cursor.execute("delete from contest_show where Id=%d"%(int(delete_id)))
+    # 进行日志备份,时间+操作+具体id
+    text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,删除contest表中id="+delete_id+"条目,"+" 是否成功:"+str(sta)
+    cursor.execute("INSERT INTO action_log (action,text) VALUES ('delete','%s')"%(text))
+    conn.commit() #提交到数据库
+    return (sta)
+
 #专利申请_删除
 def patent_delete(delete_id):
     conn, cursor = get_conn()
@@ -179,7 +210,6 @@ def patent_delete(delete_id):
     # 进行日志备份,时间+操作+具体id
     text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,删除patent表中id="+delete_id+"条目,"+" 是否成功:"+str(sta)
     cursor.execute("INSERT INTO action_log (action,text) VALUES ('delete','%s')"%(text))
-    print('fuck')
     conn.commit() #提交到数据库
     return (sta)
 

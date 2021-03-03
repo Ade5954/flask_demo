@@ -165,7 +165,15 @@ def business_show():
         data.append({'id': item[0], 'year': item[1], 'company': item[2], 'people': item[3], 'address': item[4],'code': item[5], 'major': item[6], 'prove': item[7]})
     return jsonify({'code':0,'msg':"",'count':count,'data':data})
 
-
+#老师列表
+@app.route('/business_show', methods=['GET'])
+def teacher_show():
+    result = sql_util.teacher_show()
+    data=[]
+    # print(result)
+    for item in result:
+        data.append({'name': item[1], 'number': item[2]})
+    return jsonify({'code':0,'msg':"",'data':data})
 
 #===================================数据搜索=============================================
 #学科竞赛_搜索
@@ -224,6 +232,17 @@ def business_search():
     return jsonify({'code':0,'msg':"",'data':data})
 
 #==================================数据删除=============================================
+#专利删除
+@app.route('/contest_delete', methods=['POST'])
+def contest_delete():
+    delete_id=request.values.get('delete_id')
+    print("## delete_id:"+delete_id)
+    result = sql_util.contest_delete(delete_id)
+    data=[]
+    # print(result)
+    data.append({'isDelete': result}) # 返回是否被删除,1=是,0=否;
+    return jsonify({'code':0,'msg':"",'data':data})
+
 #专利删除
 @app.route('/patent_delete', methods=['POST'])
 def patent_delete():
