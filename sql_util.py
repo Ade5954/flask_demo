@@ -138,6 +138,11 @@ def teacher_show():
     result = query(search_sql)
     return result
 
+#竞赛列表_搜索
+def contestList():
+    search_sql = ' select * from contest '
+    result = query(search_sql)
+    return result
 
 #===================================查询=============================================
 

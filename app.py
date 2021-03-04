@@ -175,6 +175,16 @@ def teacher_show():
         data.append({'name': item[1], 'number': item[2]})
     return jsonify({'code':0,'msg':"",'data':data})
 
+#竞赛列表
+@app.route('/contestList', methods=['GET'])
+def contestList():
+    result = sql_util.contestList()
+    data=[]
+    # print(result)
+    for item in result:
+        data.append({'contest_name': item[1], 'contest_holder': item[2], 'contest_type': item[3]})
+    return jsonify({'code':0,'msg':"",'data':data})
+
 #===================================数据搜索=============================================
 #学科竞赛_搜索
 @app.route('/contest_search', methods=['POST'])

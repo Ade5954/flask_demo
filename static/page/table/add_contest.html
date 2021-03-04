@@ -25,19 +25,21 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">竞赛名称</label>
         <div class="layui-input-block">
-            <input type="text" name="nd" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入竞赛名称" value="" class="layui-input">
+            <select name="contest_name" id="contest_name" lay-verify="required" lay-filter="contestFilter">
+                <option value=""></option>
+            </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label required">主办单位</label>
         <div class="layui-input-block">
-            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+            <input type="text" name="contest_holder" id="contest_holder" lay-verify="required" placeholder="请输入手机" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">类别</label>
         <div class="layui-input-block">
-            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入类别" value="" class="layui-input">
+            <input type="text" name="contest_type" id="contest_type" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入类别" value="" class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
@@ -128,6 +130,7 @@
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../js/cookie.js" charset="utf-8"></script> <!--cookie操作-->
 <script>
+    var contestData; // 全局变量,用于存储竞赛数据
     layui.use(['form','laydate'], function () {
         var form = layui.form,
             layer = layui.layer,
@@ -142,7 +145,6 @@
 
         var map = new HashMap(); // 新建hashmap(),该方法位于cookie中
         // 从数据库拿teacher_table渲染到下拉框中
-        console.log(window.location.protocol +"//"+ window.location.host + "/teacher_show");
         $.ajax({
              url: window.location.protocol +"//"+ window.location.host + "/teacher_show",
              cache: false,
@@ -159,10 +161,37 @@
                  layer.alert("未能成功读取到教师列表,请检查网络!");
              }
          });
+         console.log(window.location.protocol +"//"+ window.location.host + "/contestList");
+         $.ajax({
+             url: window.location.protocol +"//"+ window.location.host + "/contestList",
+             cache: false,
+             type: 'GET',
+             async: true,
+             success:function(data) {
+                 contestData = data.data;
+                 $.each(contestData, function(index,item) {
+                     $('#contest_name').append(new Option(item.contest_name, item.contest_name)); // 往下拉菜单里添加元素
+                 });
+                 layui.form.render("select"); // 重新渲染select组件
+             },
+             error:function() {
+                 layer.alert("未能成功读取到竞赛列表,请检查网络!");
+             }
+         });
 
-        // 监听select组件,把工号值存入teacher_number中
+        // 监听select组件中filter=teacherFilter,把工号值存入teacher_number中
         form.on('select(teacherFilter)', function(data) {
             $('#teacher_number').val(data.value);
+        })
+
+        // 监听select组件中filter=teacherFilter,把工号值存入teacher_number中
+        form.on('select(contestFilter)', function(data) {
+            $.each(contestData, function(index,item) {
+                    if(data.value == item.contest_name) {
+                        $('#contest_holder').val(item.contest_holder);
+                        $('#contest_type').val(item.contest_type);
+                    }
+                 });
         })
 
         //监听提交
