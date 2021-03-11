@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>专利数据统计</legend>
+</fieldset>
+<div class="layui-form layuimini-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label required">年度</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">竞赛名称</label>
+        <div class="layui-input-block">
+            <select name="contest_name" id="contest_name" lay-verify="required" lay-filter="contestFilter">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">主办单位</label>
+        <div class="layui-input-block">
+            <input type="text" name="contest_holder" id="contest_holder" lay-verify="required" placeholder="请输入手机" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类别</label>
+        <div class="layui-input-block">
+            <input type="text" name="contest_type" id="contest_type" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入类别" value="" class="layui-input">
+        </div>
+    </div>
+    <!--<div class="layui-form-item">
+        <label class="layui-form-label">获奖等级</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">级别</label>
+        <div class="layui-input-block">
+            <select name="quiz3">
+                        <option value="">级别</option>
+                        <option value="国家级">国家级</option>
+                        <option value="省级">省级</option>
+                        <option value="地市级">地市级</option>
+                        <option value="校级">校级</option>
+             </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">获奖等级</label>
+        <div class="layui-input-block">
+             <select name="quiz3">
+                        <option value="">获奖等级</option>
+                        <option value="一等奖">一等奖</option>
+                        <option value="二等奖">二等奖</option>
+                        <option value="三等奖">三等奖</option>
+                        <option value="优秀奖">优秀奖</option>
+             </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">获奖时间</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">作品名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">指导老师1</label>
+        <div class="layui-input-block">
+            <select name="teacher" id="teacher" lay-verify="required" lay-filter="teacherFilter">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号1</label>
+        <div class="layui-input-block">
+            <input type="text" id="teacher_number"name="teacher_number" lay-verify="required" lay-reqtext="工号不能为空" value="" class="layui-input">
+        </div>
+    </div>
+     <div class="layui-form-item">
+        <label class="layui-form-label">指导老师2</label>
+        <div class="layui-input-block">
+            <select name="teacher" id="teacher" lay-verify="required" lay-filter="teacherFilter">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号2</label>
+        <div class="layui-input-block">
+            <input type="text" id="teacher_number"name="teacher_number" lay-verify="required" lay-reqtext="工号不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <!--队长-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">队长姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">队长入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">队长专业</label>
+        <div class="layui-input-block">
+             <select name="quiz3">
+                        <option value="">请选择专业</option>
+                        <option value="一等奖">数字媒体技术</option>
+                        <option value="二等奖">数字媒体技术（校企）</option>
+                        <option value="三等奖">数据科学与大数据技术</option>
+                        <option value="优秀奖">软件工程</option>
+                        <option value="优秀奖">计算机科学与技术</option>
+                        <option value="优秀奖">计算机科学与技术（校企）</option>
+                        <option value="优秀奖">人工智能</option>
+                        <option value="优秀奖">人工智能（校企）</option>
+                        <option value="优秀奖">信息安全与管理</option>
+                        <option value="优秀奖">电子商务</option>
+                        <option value="优秀奖">电子商务（校企）</option>
+
+             </select>
+        </div>
+    </div>
+    <!--团队成员1-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员1姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员2入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员1专业</label>
+        <div class="layui-input-block">
+             <select name="quiz3">
+                        <option value="">请选择专业</option>
+                        <option value="一等奖">数字媒体技术</option>
+                        <option value="二等奖">数字媒体技术（校企）</option>
+                        <option value="三等奖">数据科学与大数据技术</option>
+                        <option value="优秀奖">软件工程</option>
+                        <option value="优秀奖">计算机科学与技术</option>
+                        <option value="优秀奖">计算机科学与技术（校企）</option>
+                        <option value="优秀奖">人工智能</option>
+                        <option value="优秀奖">人工智能（校企）</option>
+                        <option value="优秀奖">信息安全与管理</option>
+                        <option value="优秀奖">电子商务</option>
+                        <option value="优秀奖">电子商务（校企）</option>
+
+             </select>
+        </div>
+    </div>
+    <!--团队成员2-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员2姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员2入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员2专业</label>
+        <div class="layui-input-block">
+             <select name="quiz3">
+                        <option value="">请选择专业</option>
+                        <option value="一等奖">数字媒体技术</option>
+                        <option value="二等奖">数字媒体技术（校企）</option>
+                        <option value="三等奖">数据科学与大数据技术</option>
+                        <option value="优秀奖">软件工程</option>
+                        <option value="优秀奖">计算机科学与技术</option>
+                        <option value="优秀奖">计算机科学与技术（校企）</option>
+                        <option value="优秀奖">人工智能</option>
+                        <option value="优秀奖">人工智能（校企）</option>
+                        <option value="优秀奖">信息安全与管理</option>
+                        <option value="优秀奖">电子商务</option>
+                        <option value="优秀奖">电子商务（校企）</option>
+
+             </select>
+        </div>
+    </div>
+    <!--团队成员3-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员3姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员3入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员3专业</label>
+        <div class="layui-input-block">
+             <select name="quiz3">
+                        <option value="">请选择专业</option>
+                        <option value="一等奖">数字媒体技术</option>
+                        <option value="二等奖">数字媒体技术（校企）</option>
+                        <option value="三等奖">数据科学与大数据技术</option>
+                        <option value="优秀奖">软件工程</option>
+                        <option value="优秀奖">计算机科学与技术</option>
+                        <option value="优秀奖">计算机科学与技术（校企）</option>
+                        <option value="优秀奖">人工智能</option>
+                        <option value="优秀奖">人工智能（校企）</option>
+                        <option value="优秀奖">信息安全与管理</option>
+                        <option value="优秀奖">电子商务</option>
+                        <option value="优秀奖">电子商务（校企）</option>
+
+             </select>
+        </div>
+    </div>
+    <!--团队成员4-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员4姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员4入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" class="layui-input" id="year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员4专业</label>
+        <div class="layui-input-block">
+             <select name="quiz3">
+                        <option value="">请选择专业</option>
+                        <option value="一等奖">数字媒体技术</option>
+                        <option value="二等奖">数字媒体技术（校企）</option>
+                        <option value="三等奖">数据科学与大数据技术</option>
+                        <option value="优秀奖">软件工程</option>
+                        <option value="优秀奖">计算机科学与技术</option>
+                        <option value="优秀奖">计算机科学与技术（校企）</option>
+                        <option value="优秀奖">人工智能</option>
+                        <option value="优秀奖">人工智能（校企）</option>
+                        <option value="优秀奖">信息安全与管理</option>
+                        <option value="优秀奖">电子商务</option>
+                        <option value="优秀奖">电子商务（校企）</option>
+
+             </select>
+        </div>
+    </div>
+    <!--提交按钮-->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认提交</button>
+        </div>
+    </div>
+
+    <!--
+    <div class="layui-form-item">
+        <label class="layui-form-label required">用户名</label>
+        <div class="layui-input-block">
+            <input type="text" name="username" lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名" value="" class="layui-input">
+            <tip>填写自己管理账号的名称。</tip>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">性别</label>
+        <div class="layui-input-block">
+            <input type="radio" name="sex" value="男" title="男" checked="">
+            <input type="radio" name="sex" value="女" title="女">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">手机</label>
+        <div class="layui-input-block">
+            <input type="number" name="phone" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入手机" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input type="email" name="email" placeholder="请输入邮箱" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">职业</label>
+        <div class="layui-input-block">
+            <input type="text" name="work" placeholder="请输入职业" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注信息</label>
+        <div class="layui-input-block">
+            <textarea name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+    -->
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/cookie.js" charset="utf-8"></script> <!--cookie操作-->
+<script>
+    var contestData; // 全局变量,用于存储竞赛数据
+    layui.use(['form','laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            laydate = layui.laydate,
+            $ = layui.$;
+
+        //年选择器
+        laydate.render({ 
+            elem: '#year',
+            type: 'year'
+        });
+
+        var map = new HashMap(); // 新建hashmap(),该方法位于cookie中
+        // 从数据库拿teacher_table渲染到下拉框中
+        $.ajax({
+             url: window.location.protocol +"//"+ window.location.host + "/teacher_show",
+             cache: false,
+             type: 'GET',
+             async: true,
+             success:function(data) {
+                 var data = data.data;
+                 $.each(data, function(index,item) {
+                     $('#teacher').append(new Option(item.name, item.number)); // 往下拉菜单里添加元素
+                 });
+                 layui.form.render("select"); // 重新渲染select组件
+             },
+             error:function() {
+                 layer.alert("未能成功读取到教师列表,请检查网络!");
+             }
+         });
+         console.log(window.location.protocol +"//"+ window.location.host + "/contestList");
+         $.ajax({
+             url: window.location.protocol +"//"+ window.location.host + "/contestList",
+             cache: false,
+             type: 'GET',
+             async: true,
+             success:function(data) {
+                 contestData = data.data;
+                 $.each(contestData, function(index,item) {
+                     $('#contest_name').append(new Option(item.contest_name, item.contest_name)); // 往下拉菜单里添加元素
+                 });
+                 layui.form.render("select"); // 重新渲染select组件
+             },
+             error:function() {
+                 layer.alert("未能成功读取到竞赛列表,请检查网络!");
+             }
+         });
+
+        // 监听select组件中filter=teacherFilter,把工号值存入teacher_number中
+        form.on('select(teacherFilter)', function(data) {
+            $('#teacher_number').val(data.value);
+        })
+
+        // 监听select组件中filter=teacherFilter,把工号值存入teacher_number中
+        form.on('select(contestFilter)', function(data) {
+            $.each(contestData, function(index,item) {
+                    if(data.value == item.contest_name) {
+                        $('#contest_holder').val(item.contest_holder);
+                        $('#contest_type').val(item.contest_type);
+                    }
+                 });
+        })
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            var index = layer.alert(JSON.stringify(data.field), {
+                title: '最终的提交信息'
+            }, function () {
+
+                // 关闭弹出层
+                layer.close(index);
+
+                var iframeIndex = parent.layer.getFrameIndex(window.name);
+                parent.layer.close(iframeIndex);
+
+            });
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -15,11 +15,14 @@
     </style>
 </head>
 <body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend>竞赛获奖数据统计</legend>
+</fieldset>
 <div class="layui-form layuimini-form">
     <div class="layui-form-item">
         <label class="layui-form-label required">年度</label>
         <div class="layui-input-block">
-            <input type="text" class="layui-input" id="year">
+            <input type="text" name="year" class="layui-input" id="year">
         </div>
     </div>
     <div class="layui-form-item">
@@ -42,38 +45,239 @@
             <input type="text" name="contest_type" id="contest_type" lay-verify="required" lay-reqtext="手机不能为空" placeholder="请输入类别" value="" class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+    <!--<div class="layui-form-item">
         <label class="layui-form-label">获奖等级</label>
         <div class="layui-input-block">
             <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">级别</label>
+        <div class="layui-input-block">
+            <select id="level_contest" name="level_contest">
+                        <option value="">级别</option>
+                        <option value="国家级">国家级</option>
+                        <option value="省级">省级</option>
+                        <option value="地市级">地市级</option>
+                        <option value="校级">校级</option>
+             </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">获奖等级</label>
+        <div class="layui-input-block">
+             <select id="obtain_contest" name="obtain_contest">
+                        <option value="">获奖等级</option>
+                        <option value="一等奖">一等奖</option>
+                        <option value="二等奖">二等奖</option>
+                        <option value="三等奖">三等奖</option>
+                        <option value="优秀奖">优秀奖</option>
+             </select>
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">获奖时间</label>
         <div class="layui-input-block">
-            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+            <input type="text" name="get_prize_year" class="layui-input" id="get_prize_year">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">作品名称</label>
         <div class="layui-input-block">
-            <input type="text" name="phone" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+            <input type="text" id="production" name="production" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
         </div>
     </div>
+
     <div class="layui-form-item">
-        <label class="layui-form-label">指导老师</label>
+        <label class="layui-form-label">指导老师1</label>
         <div class="layui-input-block">
-            <select name="teacher" id="teacher" lay-verify="required" lay-filter="teacherFilter">
+            <select name="teacher1" id="teacher1" lay-verify="required" lay-filter="teacher1Filter">
                 <option value=""></option>
             </select>
         </div>
     </div>
     <div class="layui-form-item">
-        <label class="layui-form-label">工号</label>
+        <label class="layui-form-label">工号1</label>
         <div class="layui-input-block">
-            <input type="text" id="teacher_number"name="teacher_number" lay-verify="required" lay-reqtext="工号不能为空" value="" class="layui-input">
+            <input type="text" id="teacher1_number" name="teacher1_number" lay-verify="required" lay-reqtext="工号不能为空" value="" class="layui-input">
         </div>
     </div>
+     <div class="layui-form-item">
+        <label class="layui-form-label">指导老师2</label>
+        <div class="layui-input-block">
+            <select name="teacher2" id="teacher2" lay-verify="required" lay-filter="teacher2Filter">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工号2</label>
+        <div class="layui-input-block">
+            <input type="text" id="teacher2_number" name="teacher2_number" lay-verify="required" lay-reqtext="工号不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <!--队长-->
+    <div class="layui-form-item">
+        <label class="layui-form-label">队长姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="leader" name="leader" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">队长入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" name="leader_getIn_school_year" class="layui-input" id="leader_getIn_school_year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">队长专业</label>
+        <div class="layui-input-block">
+             <select id="leader_major" name="leader_major">
+                        <option value="">请选择专业</option>
+                        <option value="数字媒体技术">数字媒体技术</option>
+                        <option value="数字媒体技术（校企）">数字媒体技术（校企）</option>
+                        <option value="数据科学与大数据技术">数据科学与大数据技术</option>
+                        <option value="软件工程">软件工程</option>
+                        <option value="计算机科学与技术">计算机科学与技术</option>
+                        <option value="计算机科学与技术（校企）">计算机科学与技术（校企）</option>
+                        <option value="人工智能">人工智能</option>
+                        <option value="人工智能（校企）">人工智能（校企）</option>
+                        <option value="信息安全与管理">信息安全与管理</option>
+                        <option value="电子商务">电子商务</option>
+                        <option value="电子商务（校企）">电子商务（校企）</option>
+
+             </select>
+        </div>
+    </div>
+    <!--团队成员1-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员1姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="team1" name="team1" lay-verify="required" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员1入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" name="team1_getIn_school_year" class="layui-input" id="team1_getIn_school_year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员1专业</label>
+        <div class="layui-input-block">
+             <select id="team1_major" name="team1_major">
+                <option value="">请选择专业</option>
+                <option value="数字媒体技术">数字媒体技术</option>
+                <option value="数字媒体技术（校企）">数字媒体技术（校企）</option>
+                <option value="数据科学与大数据技术">数据科学与大数据技术</option>
+                <option value="软件工程">软件工程</option>
+                <option value="计算机科学与技术">计算机科学与技术</option>
+                <option value="计算机科学与技术（校企）">计算机科学与技术（校企）</option>
+                <option value="人工智能">人工智能</option>
+                <option value="人工智能（校企）">人工智能（校企）</option>
+                <option value="信息安全与管理">信息安全与管理</option>
+                <option value="电子商务">电子商务</option>
+                <option value="电子商务（校企）">电子商务（校企）</option>
+             </select>
+        </div>
+    </div>
+    <!--团队成员2-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员2姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="team2" name="team2" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员2入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" name="team2_getIn_school_year" class="layui-input" id="team2_getIn_school_year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员2专业</label>
+        <div class="layui-input-block">
+             <select id="team2_major" name="team2_major">
+                <option value="">请选择专业</option>
+                <option value="数字媒体技术">数字媒体技术</option>
+                <option value="数字媒体技术（校企）">数字媒体技术（校企）</option>
+                <option value="数据科学与大数据技术">数据科学与大数据技术</option>
+                <option value="软件工程">软件工程</option>
+                <option value="计算机科学与技术">计算机科学与技术</option>
+                <option value="计算机科学与技术（校企）">计算机科学与技术（校企）</option>
+                <option value="人工智能">人工智能</option>
+                <option value="人工智能（校企）">人工智能（校企）</option>
+                <option value="信息安全与管理">信息安全与管理</option>
+                <option value="电子商务">电子商务</option>
+                <option value="电子商务（校企）">电子商务（校企）</option>
+             </select>
+        </div>
+    </div>
+    <!--团队成员3-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员3姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="team3" name="team3" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员3入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" name="team3_getIn_school_year" class="layui-input" id="team3_getIn_school_year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员3专业</label>
+        <div class="layui-input-block">
+             <select id="team3_major" name="team3_major">
+                <option value="">请选择专业</option>
+                <option value="数字媒体技术">数字媒体技术</option>
+                <option value="数字媒体技术（校企）">数字媒体技术（校企）</option>
+                <option value="数据科学与大数据技术">数据科学与大数据技术</option>
+                <option value="软件工程">软件工程</option>
+                <option value="计算机科学与技术">计算机科学与技术</option>
+                <option value="计算机科学与技术（校企）">计算机科学与技术（校企）</option>
+                <option value="人工智能">人工智能</option>
+                <option value="人工智能（校企）">人工智能（校企）</option>
+                <option value="信息安全与管理">信息安全与管理</option>
+                <option value="电子商务">电子商务</option>
+                <option value="电子商务（校企）">电子商务（校企）</option>
+             </select>
+        </div>
+    </div>
+    <!--团队成员4-->
+     <div class="layui-form-item">
+        <label class="layui-form-label">成员4姓名</label>
+        <div class="layui-input-block">
+            <input type="text" id="team4" name="team4" lay-verify="required" lay-reqtext="手机不能为空" value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">成员4入学年度</label>
+        <div class="layui-input-block">
+            <input type="text" name="team4_getIn_school_year" class="layui-input" id="team4_getIn_school_year">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">成员4专业</label>
+        <div class="layui-input-block">
+             <select id="team4_major" name="team4_major">
+                <option value="">请选择专业</option>
+                <option value="数字媒体技术">数字媒体技术</option>
+                <option value="数字媒体技术（校企）">数字媒体技术（校企）</option>
+                <option value="数据科学与大数据技术">数据科学与大数据技术</option>
+                <option value="软件工程">软件工程</option>
+                <option value="计算机科学与技术">计算机科学与技术</option>
+                <option value="计算机科学与技术（校企）">计算机科学与技术（校企）</option>
+                <option value="人工智能">人工智能</option>
+                <option value="人工智能（校企）">人工智能（校企）</option>
+                <option value="信息安全与管理">信息安全与管理</option>
+                <option value="电子商务">电子商务</option>
+                <option value="电子商务（校企）">电子商务（校企）</option>
+             </select>
+        </div>
+    </div>
+    <!--提交按钮-->
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认提交</button>
@@ -130,7 +334,37 @@
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../js/cookie.js" charset="utf-8"></script> <!--cookie操作-->
 <script>
+    /*
+    var submitData = { // 待提交数据
+        year: "",
+        contest_name : "",
+        contest_holder : "",
+        contest_type : "",
+        level_contest : "",
+        obtain_contest : "",
+        get_prize_year : "",
+        production: "",
+        teacher1:"",
+        teacher2:"",
+        leader:"",
+        leader_getIn_school_year:"",
+        leader_major:"",
+        team1:"",
+        team1_getIn_school_year:"",
+        team1_major:"",
+        team2:"",
+        team2_getIn_school_year:"",
+        team2_major:"",
+        team3:"",
+        team3_getIn_school_year:"",
+        team3_major:"",
+        team4:"",
+        team4_getIn_school_year:"",
+        team4_major:"",
+        prove:""
+    };*/
     var contestData; // 全局变量,用于存储竞赛数据
+    var teacherData; // 全局变量,用于存储教师数据
     layui.use(['form','laydate'], function () {
         var form = layui.form,
             layer = layui.layer,
@@ -140,10 +374,47 @@
         //年选择器
         laydate.render({ 
             elem: '#year',
-            type: 'year'
+            type: 'year',
+            trigger: 'click'
+        });
+        //年月选择器
+        laydate.render({ 
+            elem: '#get_prize_year',
+            type: 'month',
+            trigger: 'click'
+        });
+        //年月选择器
+        laydate.render({ 
+            elem: '#leader_getIn_school_year',
+            type: 'month',
+            trigger: 'click'
+        });
+        //年月选择器
+        laydate.render({ 
+            elem: '#team1_getIn_school_year',
+            type: 'month',
+            trigger: 'click'
+        });
+        //年月选择器
+        laydate.render({ 
+            elem: '#team2_getIn_school_year',
+            type: 'month',
+            trigger: 'click'
+        });
+        //年月选择器
+        laydate.render({ 
+            elem: '#team3_getIn_school_year',
+            type: 'month',
+            trigger: 'click'
+        });
+        //年月选择器
+        laydate.render({ 
+            elem: '#team4_getIn_school_year',
+            type: 'month',
+            trigger: 'click'
         });
 
-        var map = new HashMap(); // 新建hashmap(),该方法位于cookie中
+        //var map = new HashMap(); // 新建hashmap(),该方法位于cookie中
         // 从数据库拿teacher_table渲染到下拉框中
         $.ajax({
              url: window.location.protocol +"//"+ window.location.host + "/teacher_show",
@@ -151,9 +422,12 @@
              type: 'GET',
              async: true,
              success:function(data) {
-                 var data = data.data;
-                 $.each(data, function(index,item) {
-                     $('#teacher').append(new Option(item.name, item.number)); // 往下拉菜单里添加元素
+                teacherData = data.data;
+                 $.each(teacherData, function(index,item) {
+                     $('#teacher1').append(new Option(item.name, item.name)); // 往下拉菜单里添加元素
+                     $('#teacher2').append(new Option(item.name, item.name)); // 往下拉菜单里添加元素
+                     //$('#teacher1_number').append(new Option(item.number, item.number)); // 往下拉菜单里添加元素
+                     //$('#teacher2_number').append(new Option(item.number, item.number)); // 往下拉菜单里添加元素
                  });
                  layui.form.render("select"); // 重新渲染select组件
              },
@@ -180,33 +454,71 @@
          });
 
         // 监听select组件中filter=teacherFilter,把工号值存入teacher_number中
-        form.on('select(teacherFilter)', function(data) {
-            $('#teacher_number').val(data.value);
+        form.on('select(teacher1Filter)', function(data) {
+            $.each(teacherData, function(index,item) {
+                if(data.value == item.name) {
+                    $('#teacher1_number').val(item.number);
+                }
+            });
         })
 
         // 监听select组件中filter=teacherFilter,把工号值存入teacher_number中
+        form.on('select(teacher2Filter)', function(data) {
+            var teacher1 = $('#teacher1').val();
+            if(teacher1 == data.value && data.value !="") {
+                $('#teacher2').val(""); // 清空teacher2 的值
+                $('#teacher2_number').val(""); // 清空teacher_number2 的值
+                layer.alert("教师1与教师2不允许选择相同的教师!");
+                return false;
+            }
+            $.each(teacherData, function(index,item) {
+                if(data.value == item.name) {
+                    $('#teacher2_number').val(item.number);
+                }
+            });
+        })
+
+        // 监听select组件中filter=contestFilter,把竞赛相关信息写入contest_holder和contest_type中
         form.on('select(contestFilter)', function(data) {
             $.each(contestData, function(index,item) {
-                    if(data.value == item.contest_name) {
-                        $('#contest_holder').val(item.contest_holder);
-                        $('#contest_type').val(item.contest_type);
-                    }
-                 });
+                if(data.value == item.contest_name) {
+                    $('#contest_holder').val(item.contest_holder);
+                    $('#contest_type').val(item.contest_type);
+                }
+            });
         })
 
         //监听提交
         form.on('submit(saveBtn)', function (data) {
+            /*
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
-            }, function () {
-
+            }, function () {*/
+                 //提交json数据
+                $.ajax({
+                    url: window.location.protocol +"//"+ window.location.host + "/contest_insert",
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(data.field), // 获取到待提交的数据,并转换为JSON格式
+                    dataType: "json",
+                    success:function(data){
+                        //var data = JSON.parse(data); // 没必要解析data
+                        if(data.code == 0 && data.data[0].isInsert == 1){
+                            layer.alert("提交成功!");
+                        }else{
+                            layer.alert("未提交成功!", {icon: 7});
+                        }
+                    },
+                    error: function () {
+                        layer.alert("提交该竞赛信息信息失败,请检查网络!", {icon: 7});
+                    }
+                });
+                /*
                 // 关闭弹出层
                 layer.close(index);
-
                 var iframeIndex = parent.layer.getFrameIndex(window.name);
                 parent.layer.close(iframeIndex);
-
-            });
+            });*/
 
             return false;
         });

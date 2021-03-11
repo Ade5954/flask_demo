@@ -184,13 +184,28 @@ def business_search(search_string):
 #===================================添加=============================================
 
 #学科竞赛_添加
-def contest_add(year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,prove):
+def contest_insert(year,name_contest,host_contest,classes,level_contest,obtain_contest,time1,production,teacher,leader,leader_major,team,search):
+    # 注意:这里的time字段改为time1,因为调用time.py包时编译器分不清time是变量名还是time包
     conn, cursor = get_conn()
     sta=0
-    sta+=cursor.execute(" INSERT INTO contest_show (year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,prove) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(
-        year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,prove))
+    sta+=cursor.execute(" INSERT INTO contest_show (year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,search) VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')"%(
+        year,name_contest,host_contest,classes,level_contest,obtain_contest,time1,production,teacher,leader,leader_major,team,search))
     text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,添加contest表中name="+name_contest+"条目,"+" 是否成功:"+str(sta)
     cursor.execute("INSERT INTO action_log (action,text) VALUES ('insert','%s')"%(text))
+    conn.commit() #提交到数据库
+    return (sta)
+
+#===================================修改=============================================
+
+#学科竞赛_修改
+def contest_update(id,year,name_contest,host_contest,classes,level_contest,obtain_contest,time1,production,teacher,leader,leader_major,team,prove,search):
+    # 注意:这里的time字段改为time1,因为调用time.py包时编译器分不清time是变量名还是time包
+    conn, cursor = get_conn()
+    sta=0
+    sta+=cursor.execute(" UPDATE contest_show SET year='%s',name_contest='%s',host_contest='%s',classes='%s',level_contest='%s',obtain_contest='%s',time='%s',production='%s',teacher='%s',leader='%s',leader_major='%s',team='%s',prove='%s',search='%s' WHERE id='%s'"%(
+        year,name_contest,host_contest,classes,level_contest,obtain_contest,time1,production,teacher,leader,leader_major,team,prove,search,id))
+    text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,修改contest表中name="+name_contest+"条目,"+" 是否成功:"+str(sta)
+    cursor.execute("INSERT INTO action_log (action,text) VALUES ('update','%s')"%(text))
     conn.commit() #提交到数据库
     return (sta)
 
@@ -218,6 +233,37 @@ def patent_delete(delete_id):
     conn.commit() #提交到数据库
     return (sta)
 
+#学术论文_删除
+def paper_delete(delete_id):
+    conn, cursor = get_conn()
+    sta=0
+    sta+=cursor.execute("delete from paper_show where Id=%d"%(int(delete_id)))
+    # 进行日志备份,时间+操作+具体id
+    text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,删除paper表中id="+delete_id+"条目,"+" 是否成功:"+str(sta)
+    cursor.execute("INSERT INTO action_log (action,text) VALUES ('delete','%s')"%(text))
+    conn.commit() #提交到数据库
+    return (sta)
+
+#课题申报_删除
+def issue_delete(delete_id):
+    conn, cursor = get_conn()
+    sta=0
+    sta+=cursor.execute("delete from issue_show where Id=%d"%(int(delete_id)))
+    # 进行日志备份,时间+操作+具体id
+    text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,删除issue表中id="+delete_id+"条目,"+" 是否成功:"+str(sta)
+    cursor.execute("INSERT INTO action_log (action,text) VALUES ('delete','%s')"%(text))
+    conn.commit() #提交到数据库
+    return (sta)
+#创业项目_删除
+def business_delete(delete_id):
+    conn, cursor = get_conn()
+    sta=0
+    sta+=cursor.execute("delete from business_show where Id=%d"%(int(delete_id)))
+    # 进行日志备份,时间+操作+具体id
+    text = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())+" ,删除business表中id="+delete_id+"条目,"+" 是否成功:"+str(sta)
+    cursor.execute("INSERT INTO action_log (action,text) VALUES ('delete','%s')"%(text))
+    conn.commit() #提交到数据库
+    return (sta)
 #===================================登录检查=============================================
 def loginCheck(username,password):
     query_sql = "select count(*) from user u where u.username = '{}' and u.password = '{}'".format(

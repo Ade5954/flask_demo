@@ -242,7 +242,7 @@ def business_search():
     return jsonify({'code':0,'msg':"",'data':data})
 
 #==================================数据删除=============================================
-#专利删除
+#竞赛_删除
 @app.route('/contest_delete', methods=['POST'])
 def contest_delete():
     delete_id=request.values.get('delete_id')
@@ -253,7 +253,7 @@ def contest_delete():
     data.append({'isDelete': result}) # 返回是否被删除,1=是,0=否;
     return jsonify({'code':0,'msg':"",'data':data})
 
-#专利删除
+#专利_删除
 @app.route('/patent_delete', methods=['POST'])
 def patent_delete():
     delete_id=request.values.get('delete_id')
@@ -262,6 +262,120 @@ def patent_delete():
     data=[]
     # print(result)
     data.append({'isDelete': result}) # 返回是否被删除,1=是,0=否;
+    return jsonify({'code':0,'msg':"",'data':data})
+
+#学术论文_删除
+@app.route('/paper_delete', methods=['POST'])
+def paper_delete():
+    delete_id=request.values.get('delete_id')
+    print("## delete_id:"+delete_id)
+    result = sql_util.paper_delete(delete_id)
+    data=[]
+    # print(result)
+    data.append({'isDelete': result}) # 返回是否被删除,1=是,0=否;
+    return jsonify({'code':0,'msg':"",'data':data})
+
+#课题申报_删除
+@app.route('/issue_delete', methods=['POST'])
+def issue_delete():
+    delete_id=request.values.get('delete_id')
+    print("## delete_id:"+delete_id)
+    result = sql_util.issue_delete(delete_id)
+    data=[]
+    # print(result)
+    data.append({'isDelete': result}) # 返回是否被删除,1=是,0=否;
+    return jsonify({'code':0,'msg':"",'data':data})
+
+#创业项目_删除
+@app.route('/business_delete', methods=['POST'])
+def business_delete():
+    delete_id=request.values.get('delete_id')
+    print("## delete_id:"+delete_id)
+    result = sql_util.business_delete(delete_id)
+    data=[]
+    # print(result)
+    data.append({'isDelete': result}) # 返回是否被删除,1=是,0=否;
+    return jsonify({'code':0,'msg':"",'data':data})
+
+#==================================数据插入=============================================
+#学科竞赛_插入
+@app.route('/contest_insert', methods=['POST'])
+def contest_insert():
+    a = request.get_data(as_text=True)
+    dictData = json.loads(a)
+    year=dictData['year']
+    name_contest=dictData['contest_name']
+    host_contest=dictData['contest_holder']
+    classes=dictData['contest_type']
+    level_contest=dictData['level_contest']
+    obtain_contest=dictData['obtain_contest']
+    time=dictData['get_prize_year'] #获奖时间
+    production=dictData['production']
+    teacher1=dictData['teacher1']
+    teacher2=dictData['teacher2']
+    if teacher2 != "":
+        teacher = teacher1+' '+teacher2
+    else:
+        teacher = teacher1
+    # 对前端传来的字符串进行拼接
+    leader=dictData['leader']
+    leader_major=dictData['leader_major']
+    leader_getIn_school_year=dictData['leader_getIn_school_year']
+
+    leader_major = leader_getIn_school_year[0:4]+leader_major
+
+    team1=dictData['team1']
+    team1_major=dictData['team1_major']
+    team1_getIn_school_year=dictData['team1_getIn_school_year']
+
+    team2=dictData['team2']
+    team2_major=dictData['team2_major']
+    team2_getIn_school_year=dictData['team2_getIn_school_year']
+
+    team3=dictData['team3']
+    team3_major=dictData['team3_major']
+    team3_getIn_school_year=dictData['team3_getIn_school_year']
+
+    team4=dictData['team4']
+    team4_major=dictData['team4_major']
+    team4_getIn_school_year=dictData['team4_getIn_school_year']
+
+    team = team1+" ("+team1_getIn_school_year+team1_major+") "+team2+" ("+team2_getIn_school_year+team2_major+") "+team3+" ("+team3_getIn_school_year+team3_major+") "+team4+" ("+team4_getIn_school_year+team4_major+") "
+
+    # prove=dictData['prove']
+    search=name_contest+host_contest+classes+level_contest+obtain_contest+time+production+teacher+leader+leader_major+team
+    
+    result = sql_util.contest_insert(
+        year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,search)
+    data=[]
+    # print(result)
+    data.append({'isInsert': result}) # 返回是否添加成功,1=是,0=否;
+    return jsonify({'code':0,'msg':"",'data':data})
+
+#==================================数据修改=============================================
+#学科竞赛_修改
+@app.route('/contest_update', methods=['POST'])
+def contest_update():
+    year=request.values.get('year')
+    name_contest=request.values.get('name_contest')
+    host_contest=request.values.get('host_contest')
+    classes=request.values.get('classes')
+    level_contest=request.values.get('level_contest')
+    obtain_contest=request.values.get('obtain_contest')
+    time=request.values.get('time')
+    production=request.values.get('production')
+    teacher=request.values.get('teacher')
+    leader=request.values.get('leader')
+    leader_major=request.values.get('leader_major')
+    team=request.values.get('team')
+    prove=request.values.get('prove')
+    id=request.values.get('id')
+    search=name_contest+host_contest+classes+level_contest+obtain_contest+time+production+teacher+leader+leader_major+team
+    result = sql_util.contest_update(
+        id,year,name_contest,host_contest,classes,level_contest,obtain_contest,time,production,teacher,leader,leader_major,team,prove,search)
+    data=[]
+    # print(result)
+    data.append({'isUpdated': result}) # 返回是否添加成功,1=是,0=否;
     return jsonify({'code':0,'msg':"",'data':data})
 
 #==================================登录相关=============================================
